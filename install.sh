@@ -30,7 +30,7 @@ set -e
 
 export GITHUB_SOURCE="main"
 export SCRIPT_RELEASE="canary"
-export GITHUB_BASE_URL="https://raw.githubusercontent.com/freindlyngeeks/pelican-installer"
+export GITHUB_BASE_URL="https://raw.githubusercontent.com/friendlyngeeks/pelican-installer"
 
 LOG_PATH="/var/log/pelican-installer.log"
 

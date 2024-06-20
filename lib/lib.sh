@@ -21,7 +21,7 @@ set -e
 #   You should have received a copy of the GNU General Public License                #
 #   along with this program.  If not, see <https://www.gnu.org/licenses/>.           #
 #                                                                                    #
-# https://github.com/friendlyngeeks/pelican-installer/blob/main/LICENSE            #
+# https://github.com/friendlyngeeks/pelican-installer/blob/main/LICENSE              #
 #                                                                                    #
 # This script is not associated with the official Pelican Project.                   #
 # https://github.com/friendlyngeeks/pelican-installer                                #
@@ -34,7 +34,7 @@ set -e
 export GITHUB_SOURCE=${GITHUB_SOURCE:-main}
 export SCRIPT_RELEASE=${SCRIPT_RELEASE:-canary}
 
-# Pterodactyl versions
+# Pelican versions
 export PELICAN_PANEL_VERSION=""
 export PELICAN_WINGS_VERSION=""
 
