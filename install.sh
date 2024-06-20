@@ -28,29 +28,62 @@ set -e
 #                                                                                    #
 ######################################################################################
 
-export GITHUB_SOURCE="v1.0.0"
-export SCRIPT_RELEASE="v1.0.0"
+export GITHUB_SOURCE="main"
+export SCRIPT_RELEASE="canary"
 export GITHUB_BASE_URL="https://raw.githubusercontent.com/freindlyngeeks/pelican-installer"
 
 LOG_PATH="/var/log/pelican-installer.log"
 
-# check for curl
-if ! [ -x "$(command -v curl)" ]; then
-  echo "* curl is required in order for this script to work."
-  echo "* install using apt (Debian and derivatives) or yum/dnf (CentOS)"
+output() {
+  echo "* ${1}"
+}
+
+error() {
+  COLOR_RED='\033[0;31m'
+  COLOR_NC='\033[0m'
+
+  echo ""
+  echo -e "* ${COLOR_RED}ERROR${COLOR_NC}: $1"
+  echo ""
+}
+
+# Exit with error status code if user is not root
+if [[ $EUID -ne 0 ]]; then
+  error "This script must be executed with root privileges (sudo)." 1>&2
   exit 1
+fi
+
+# Check for curl
+if ! [ -x "$(command -v curl)" ]; then
+  echo "* Installing dependencies."
+  # Rockey / Alma
+  if [ -n "$(command -v yum)" ]; then
+    yum update -y >> /dev/null 2>&1
+    yum -y install curl >> /dev/null 2>&1
+  fi
+  # Debian / Ubuntu
+  if [ -n "$(command -v apt)" ]; then
+    DEBIAN_FRONTEND=noninteractive apt update -y >> /dev/null 2>&1
+    DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends snapd cron curl wget gzip jq >> /dev/null 2>&1
+  fi
+  # Check if curl is installed
+  if ! [ -x "$(command -v curl)" ]; then
+    echo "* curl is required in order for this script to work."
+    echo "* install using apt (Debian and derivatives) or yum/dnf (CentOS)"
+    exit 1
+  fi
 fi
 
 # Always remove lib.sh, before downloading it
 rm -rf /tmp/lib.sh
-curl -sSL -o /tmp/lib.sh "$GITHUB_BASE_URL"/"$GITHUB_SOURCE"/lib/lib.sh
+curl -sSL -o /tmp/lib.sh "$GITHUB_BASE_URL/$GITHUB_SOURCE"/lib/lib.sh
 # shellcheck source=lib/lib.sh
 source /tmp/lib.sh
 
 execute() {
   echo -e "\n\n* pelican-installer $(date) \n\n" >>$LOG_PATH
 
-  [[ "$1" == *"canary"* ]] && export GITHUB_SOURCE="master" && export SCRIPT_RELEASE="canary"
+  [[ "$1" == *"canary"* ]] && export GITHUB_SOURCE="main" && export SCRIPT_RELEASE="canary"
   update_lib_source
   run_ui "${1//_canary/}" |& tee -a $LOG_PATH
 

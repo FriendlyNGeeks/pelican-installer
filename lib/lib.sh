@@ -21,7 +21,7 @@ set -e
 #   You should have received a copy of the GNU General Public License                #
 #   along with this program.  If not, see <https://www.gnu.org/licenses/>.           #
 #                                                                                    #
-# https://github.com/friendlyngeeks/pelican-installer/blob/master/LICENSE            #
+# https://github.com/friendlyngeeks/pelican-installer/blob/main/LICENSE            #
 #                                                                                    #
 # This script is not associated with the official Pelican Project.                   #
 # https://github.com/friendlyngeeks/pelican-installer                                #
@@ -31,7 +31,7 @@ set -e
 # ------------------ Variables ----------------- #
 
 # Versioning
-export GITHUB_SOURCE=${GITHUB_SOURCE:-master}
+export GITHUB_SOURCE=${GITHUB_SOURCE:-main}
 export SCRIPT_RELEASE=${SCRIPT_RELEASE:-canary}
 
 # Pterodactyl versions
@@ -122,7 +122,7 @@ welcome() {
   get_latest_versions
 
   print_brake 70
-  output "Pterodactyl panel installation script @ $SCRIPT_RELEASE"
+  output "Pelican panel installation script @ $SCRIPT_RELEASE"
   output ""
   output "Copyright (C) 2024 - 2028, Anthony Lester, <friendlyneighborhoodgeeks@gmail.com>"
   output "https://github.com/friendlyngeeks/pelican-installer"
